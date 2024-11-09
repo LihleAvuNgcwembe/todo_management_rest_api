@@ -3,6 +3,7 @@ package net.javaguides.todo.service.impl;
 import lombok.AllArgsConstructor;
 import net.javaguides.todo.dto.TodoDto;
 import net.javaguides.todo.entity.Todo;
+import net.javaguides.todo.exception.ResourceNotFoundException;
 import net.javaguides.todo.repository.TodoRepository;
 import net.javaguides.todo.service.TodoService;
 import org.modelmapper.ModelMapper;
@@ -29,5 +30,13 @@ public class TodoServiceImpl implements TodoService {
         TodoDto savedTodoDto = modelMapper.map(savedTodo, TodoDto.class);
 
         return savedTodoDto;
+    }
+
+    @Override
+    public TodoDto getTodo(Long todoId) {
+        Todo todo = todoRepository.findById(todoId)
+                .orElseThrow(()-> new ResourceNotFoundException("Todo not Found with id " + todoId));
+
+        return modelMapper.map(todo, TodoDto.class);
     }
 }
