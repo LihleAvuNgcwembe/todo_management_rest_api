@@ -66,8 +66,18 @@ public class TodoController {
     // Build Completed Todo REST API
     @PatchMapping("{id}/complete")
     public ResponseEntity<TodoDto>  completeTodo(@PathVariable("id") Long todoId){
+
         TodoDto completedTodo = todoService.completeTodo(todoId);
 
         return ResponseEntity.ok(completedTodo);
+    }
+
+    // Build In completed Todo REST API
+    @PatchMapping("{id}/in-complete")
+    public ResponseEntity<TodoDto> incompleteTodo(@PathVariable("id") Long todoId){
+
+        TodoDto inCompletedTodo = todoService.inCompleteTodo(todoId);
+
+        return ResponseEntity.ok(inCompletedTodo);
     }
 }
