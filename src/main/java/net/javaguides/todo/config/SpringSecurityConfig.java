@@ -47,6 +47,7 @@ public class SpringSecurityConfig {
 //                    // All GET request all public
 //                    //authorize.requestMatchers(HttpMethod.GET,"/api/**").permitAll();
 //                    // All request must be authenticated
+                    authorize.requestMatchers("/api/auth/**").permitAll();
                     authorize.anyRequest().authenticated();
 
                 }).httpBasic(Customizer.withDefaults());
