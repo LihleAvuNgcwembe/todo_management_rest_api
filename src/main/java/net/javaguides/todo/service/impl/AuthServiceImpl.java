@@ -1,6 +1,7 @@
 package net.javaguides.todo.service.impl;
 
 import lombok.AllArgsConstructor;
+import net.javaguides.todo.dto.LoginDto;
 import net.javaguides.todo.dto.RegisterDto;
 import net.javaguides.todo.entity.Role;
 import net.javaguides.todo.entity.User;
@@ -10,6 +11,10 @@ import net.javaguides.todo.repository.UserRepository;
 import net.javaguides.todo.service.AuthService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private RoleRepository roleRepository;
     private ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
 
     @Override
     public String register(RegisterDto registerDto) {
@@ -54,5 +60,18 @@ public class AuthServiceImpl implements AuthService {
 
         return "User Registered Successfully!";
 
+    }
+
+    @Override
+    public String login(LoginDto loginDto) {
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDto.getUsernameOrEmail(),
+                loginDto.getPassword()
+        ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "User logged in successfully";
     }
 }
